@@ -10,6 +10,7 @@ namespace ClientManagerDalTests
 
         static DataContext()
         {
+            // Replace connectionstring to your own...
             ConnectionString = $@"Data Source=(localdb)\mssqllocaldb;Initial Catalog=ClientManager_TEST_{Guid.NewGuid()};Integrated Security=True";
         }
 
