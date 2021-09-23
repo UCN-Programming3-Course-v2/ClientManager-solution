@@ -6,7 +6,9 @@ You were given the task to implement the database operations in the application 
 
 This sample solution uses a variant of the factory method pattern when creating the DAO's. It is implemented in the DaoFactory class in the ClientManager.DataAccessLayer project. There is a single method with a generic parameter indicating which DAO you get back.
 
+The CRUD methods is pretty straight forward using ADO.NET to execute SQL commands on the SQL Server.
 
+## Database
 
 The task can be solved with a single table in the database that should look something like this:
 
