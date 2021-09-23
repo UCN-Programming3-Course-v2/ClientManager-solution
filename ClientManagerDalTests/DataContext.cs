@@ -4,20 +4,20 @@ using System.Data.SqlClient;
 
 namespace ClientManagerDalTests
 {
-    class DataContext
+    public static class DataContext
     {
-        public string ConnectionString { get; }
+        public static string ConnectionString { get; }
 
-        public DataContext(string connectionString)
+        static DataContext()
         {
-            if (connectionString is null)
-            {
-                throw new ArgumentNullException(nameof(connectionString));
-            }
-            ConnectionString = connectionString;
+            ConnectionString = $@"Data Source=(localdb)\mssqllocaldb;Initial Catalog=ClientManager_TEST_{Guid.NewGuid()};Integrated Security=True";
         }
 
-        public IDbConnection GetConnection() => new SqlConnection(ConnectionString);
-
+        public static IDbConnection OpenConnection()
+        {
+            SqlConnection conn = new(ConnectionString);
+            conn.Open();
+            return conn;
+        }
     }
 }

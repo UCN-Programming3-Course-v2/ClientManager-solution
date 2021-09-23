@@ -17,7 +17,7 @@ namespace ClientManager.DataAccessLayer.Daos
             _connectionFactory = connectionFactory;
         }
 
-        protected IDbConnection GetConnection()
+        protected IDbConnection OpenConnection()
         {
             return _connectionFactory();
         }
