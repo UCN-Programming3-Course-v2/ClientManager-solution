@@ -1,12 +1,22 @@
 # Client Manager Application (Exercise 1)
 
-In this exercise you will work in a Visual Studio solution where a big part of it already is implemented. 
+In this exercise you worked on a Visual Studio solution where a big part of it already was implemented. 
 
-## Scenario
-You are working as a software developer and your team is developing an application that can manage customer database. You are given the task to implement the database operations in the application layer.
+You were given the task to implement the database operations in the application layer and now you should have implemented the CRUD methods in the Data Access Layer (DAL). 
 
-You must implement the CRUD methods in the Data Access Layer (DAL). It is implemented using the abstract factory pattern and you must comply with that.
+It is implemented using the abstract factory pattern and you must comply with that.
 
 **HINT!** The methods that you must implement are marked with a TODO comment
 
-**NOTE!** The database is not designed nor implemented yet. You must start with creating it and add a table where you can store the customer information. Look at the Customer class to get an idea of the structure.
+The task can be solved with a single table in the database that should look something like this:
+
+CREATE TABLE Customers(  
+  Id int primary key identity(1,1) not null,   
+  Firstname nvarchar(50) not null,   
+  Lastname nvarchar(50) not null,   
+  Address nvarchar(50) not null,   
+  Zip char(6),  
+  City nvarchar(50),   
+  Phone char(12),  
+  Email nvarchar(128)  
+)
