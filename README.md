@@ -10,7 +10,8 @@ It is implemented using the abstract factory pattern and you must comply with th
 
 The task can be solved with a single table in the database that should look something like this:
 
-CREATE TABLE Customers(  
+```SQL
+CREATE TABLE Customers (  
   Id int primary key identity(1,1) not null,   
   Firstname nvarchar(50) not null,   
   Lastname nvarchar(50) not null,   
@@ -20,3 +21,4 @@ CREATE TABLE Customers(
   Phone char(12),  
   Email nvarchar(128)  
 )
+´´´
