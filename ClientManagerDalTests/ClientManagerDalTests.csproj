@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ClientManager.DataAccessLayer\ClientManager.DataAccessLayer.csproj" />
+    <ProjectReference Include="..\DatabaseVersion\DatabaseVersion.csproj" />
   </ItemGroup>
 
 </Project>

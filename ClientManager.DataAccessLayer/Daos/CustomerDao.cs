@@ -31,17 +31,7 @@ namespace ClientManager.DataAccessLayer.Daos
             // 4. Pass the data from the reader into a collection of Customer objects
             while (reader.Read())
             {
-                yield return new Customer
-                {
-                    CustomerId = reader.GetInt32(0),
-                    Firstname = reader.GetString(1),
-                    Lastname = reader.GetString(2),
-                    Address = reader.GetString(3),
-                    Zip = reader.GetString(5),
-                    City = reader.GetString(4),
-                    Phone = reader.GetString(6),
-                    Email = reader.GetString(7)
-                };
+                yield return Map(reader);
             }
 
             // 5. Clean up
@@ -67,22 +57,27 @@ namespace ClientManager.DataAccessLayer.Daos
 
             if (reader.Read())
             {
-                return new Customer
-                {
-                    CustomerId = reader.GetInt32(0),
-                    Firstname = reader.GetString(1),
-                    Lastname = reader.GetString(2),
-                    Address = reader.GetString(3),
-                    Zip = reader.GetString(5),
-                    City = reader.GetString(4),
-                    Phone = reader.GetString(6),
-                    Email = reader.GetString(7)
-                };
+                return Map(reader);
             }
             else
             {
                 return null;
             }
+        }
+
+        private static Customer Map(IDataReader reader)
+        {
+            return new Customer
+            {
+                CustomerId = Convert.ToInt32(reader["Id"]),
+                Firstname = Convert.ToString(reader["Firstname"]),
+                Lastname = Convert.ToString(reader["Lastname"]),
+                Address = Convert.ToString(reader["Address"]),
+                Zip = reader["Zip"] == null ? null : Convert.ToString(reader["Zip"]),
+                City = reader["City"] == null ? null : Convert.ToString(reader["City"]),
+                Phone =reader["Phone"] == null ? null : Convert.ToString(reader["Phone"]),
+                Email = reader["Email"] == null ? null : Convert.ToString(reader["Email"])
+            };
         }
 
 
@@ -93,7 +88,7 @@ namespace ClientManager.DataAccessLayer.Daos
             conn.Open();
 
             IDbCommand cmd = conn.CreateCommand();
-            cmd.CommandText = "INSERT INTO Customers VALUES (@firstname, @lastname, @address, @zip, @city, @email, @phone)";
+            cmd.CommandText = "INSERT INTO Customers VALUES (@firstname, @lastname, @address, @zip, @city, @phone, @email)";
 
             IDataParameter firstnameParameter = cmd.CreateParameter();
             firstnameParameter.ParameterName = "@firstname";
