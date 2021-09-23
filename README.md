@@ -10,7 +10,7 @@ This sample solution uses a variant of the factory method pattern when creating 
 
 The CRUD methods is pretty straight forward using ADO.NET to execute SQL commands on the SQL Server.
 
-[DAL](https://github.com/UCN-Programming3-Course-v2/ClientManager-solution/blob/master/DAL.png)
+![DAL](https://github.com/UCN-Programming3-Course-v2/ClientManager-solution/blob/master/DAL.png)
 
 ## Database
 
