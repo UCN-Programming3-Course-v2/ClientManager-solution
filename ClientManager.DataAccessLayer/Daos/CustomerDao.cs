@@ -18,8 +18,7 @@ namespace ClientManager.DataAccessLayer.Daos
             // TODO: Implement call to database for returning all rows from the Customers table (Exercise 1)
 
             // 1. Create and open a connection to the database
-            IDbConnection conn = GetConnection();
-            conn.Open();
+            using IDbConnection conn = OpenConnection();
 
             // 2. Create a sql command that will be executed on the database
             IDbCommand cmd = conn.CreateCommand();
@@ -31,17 +30,7 @@ namespace ClientManager.DataAccessLayer.Daos
             // 4. Pass the data from the reader into a collection of Customer objects
             while (reader.Read())
             {
-                yield return new Customer
-                {
-                    CustomerId = reader.GetInt32(0),
-                    Firstname = reader.GetString(1),
-                    Lastname = reader.GetString(2),
-                    Address = reader.GetString(3),
-                    Zip = reader.GetString(5),
-                    City = reader.GetString(4),
-                    Phone = reader.GetString(6),
-                    Email = reader.GetString(7)
-                };
+                yield return Map(reader);
             }
 
             // 5. Clean up
@@ -51,8 +40,7 @@ namespace ClientManager.DataAccessLayer.Daos
         public Customer GetById(int id)
         {
             // TODO: Implement call to database for returning a specific row from the Customers table with the given id (Exercise 1)
-            IDbConnection conn = GetConnection();
-            conn.Open();
+            using IDbConnection conn = OpenConnection();
 
             IDbCommand cmd = conn.CreateCommand();
             cmd.CommandText = "SELECT * FROM Customers WHERE Id = @id";
@@ -67,17 +55,7 @@ namespace ClientManager.DataAccessLayer.Daos
 
             if (reader.Read())
             {
-                return new Customer
-                {
-                    CustomerId = reader.GetInt32(0),
-                    Firstname = reader.GetString(1),
-                    Lastname = reader.GetString(2),
-                    Address = reader.GetString(3),
-                    Zip = reader.GetString(5),
-                    City = reader.GetString(4),
-                    Phone = reader.GetString(6),
-                    Email = reader.GetString(7)
-                };
+                return Map(reader);
             }
             else
             {
@@ -85,15 +63,29 @@ namespace ClientManager.DataAccessLayer.Daos
             }
         }
 
+        private static Customer Map(IDataReader reader)
+        {
+            return new Customer
+            {
+                CustomerId = Convert.ToInt32(reader["Id"]),
+                Firstname = Convert.ToString(reader["Firstname"]),
+                Lastname = Convert.ToString(reader["Lastname"]),
+                Address = Convert.ToString(reader["Address"]),
+                Zip = reader["Zip"] == null ? null : Convert.ToString(reader["Zip"]),
+                City = reader["City"] == null ? null : Convert.ToString(reader["City"]),
+                Phone = reader["Phone"] == null ? null : Convert.ToString(reader["Phone"]),
+                Email = reader["Email"] == null ? null : Convert.ToString(reader["Email"])
+            };
+        }
+
 
         public int Insert(Customer entity)
         {
             // TODO: Implement call to database that inserts the entity into the customers table (Exercise 1)
-            IDbConnection conn = GetConnection();
-            conn.Open();
+            using IDbConnection conn = OpenConnection();
 
             IDbCommand cmd = conn.CreateCommand();
-            cmd.CommandText = "INSERT INTO Customers VALUES (@firstname, @lastname, @address, @zip, @city, @email, @phone)";
+            cmd.CommandText = "INSERT INTO Customers VALUES (@firstname, @lastname, @address, @zip, @city, @phone, @email)";
 
             IDataParameter firstnameParameter = cmd.CreateParameter();
             firstnameParameter.ParameterName = "@firstname";
@@ -143,8 +135,7 @@ namespace ClientManager.DataAccessLayer.Daos
         public bool Update(Customer entity)
         {
             // TODO: Implement call to database that updates the entity in the customers table (Exercise 1)
-            IDbConnection conn = GetConnection();
-            conn.Open();
+            using IDbConnection conn = OpenConnection();
 
             IDbCommand cmd = conn.CreateCommand();
             cmd.CommandText = "UPDATE Customers SET " +
@@ -211,8 +202,7 @@ namespace ClientManager.DataAccessLayer.Daos
         public bool Delete(Customer entity)
         {
             // TODO: Implement call to database that deletes the entity from the customers table (Exercise 1)
-            IDbConnection conn = GetConnection();
-            conn.Open();
+            using IDbConnection conn = OpenConnection();
 
             IDbCommand cmd = conn.CreateCommand();
             cmd.CommandText = "DELETE FROM Customers WHERE Id = @id";

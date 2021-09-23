@@ -1,7 +1,6 @@
 using ClientManager;
 using ClientManager.DataAccessLayer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace ClientManagerDalTests
 {
@@ -11,7 +10,8 @@ namespace ClientManagerDalTests
         [TestMethod]
         public void CreateCustomerDao()
         {
-            ICustomerDao dao = DaoFactory.Create<ICustomerDao>(DataContext.GetConnection);
+            ICustomerDao dao = DaoFactory.Create<ICustomerDao>(DataContext.OpenConnection);
+            
             Assert.IsInstanceOfType(dao, typeof(ICustomerDao));
         }
     }

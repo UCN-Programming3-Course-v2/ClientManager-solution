@@ -1,6 +1,7 @@
 ﻿using ClientManager;
 using ClientManager.DataAccessLayer;
 using ClientManager.Model;
+using DatabaseVersion;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -10,12 +11,29 @@ namespace ClientManagerDalTests
 {
     [TestClass]
     public class CustomerTests
-    {
+    {      
+        public TestContext TestContext { get; set; }
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            Database.Upgrade(DataContext.ConnectionString);
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            if (TestContext.CurrentTestOutcome == UnitTestOutcome.Passed)
+            {
+                Database.Drop(DataContext.ConnectionString);
+            }
+        }
+
         [TestMethod]
         public void GetAllTest()
         {
             // TODO: Implement database integration test
-            ICustomerDao dao = DaoFactory.Create<ICustomerDao>(DataContext.GetConnection);
+            ICustomerDao dao = DaoFactory.Create<ICustomerDao>(DataContext.OpenConnection);
 
             var list = dao.GetAll();
 
@@ -28,7 +46,7 @@ namespace ClientManagerDalTests
         public void GetByIdTest()
         {
             // TODO: Implement database integration test
-            ICustomerDao dao = DaoFactory.Create<ICustomerDao>(DataContext.GetConnection);
+            ICustomerDao dao = DaoFactory.Create<ICustomerDao>(DataContext.OpenConnection);
 
             var customer = dao.GetById(1);
 
@@ -41,7 +59,7 @@ namespace ClientManagerDalTests
         [TestMethod]
         public void CreateCustomerTest()
         {
-            ICustomerDao dao = DaoFactory.Create<ICustomerDao>(DataContext.GetConnection);
+            ICustomerDao dao = DaoFactory.Create<ICustomerDao>(DataContext.OpenConnection);
 
             Customer customer = new()
             {
@@ -63,7 +81,7 @@ namespace ClientManagerDalTests
         public void UpdateCustomerTest()
         {
             // TODO: Implement database integration test
-            ICustomerDao dao = DaoFactory.Create<ICustomerDao>(DataContext.GetConnection);
+            ICustomerDao dao = DaoFactory.Create<ICustomerDao>(DataContext.OpenConnection);
 
             var customer = dao.GetById(2);
 
@@ -79,7 +97,7 @@ namespace ClientManagerDalTests
         public void DeleteCustomerTest()
         {
             // TODO: Implement database integration test
-            ICustomerDao dao = DaoFactory.Create<ICustomerDao>(DataContext.GetConnection);
+            ICustomerDao dao = DaoFactory.Create<ICustomerDao>(DataContext.OpenConnection);
 
             var customer = dao.GetById(3);
 
