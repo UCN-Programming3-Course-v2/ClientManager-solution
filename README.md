@@ -6,6 +6,8 @@ You were given the task to implement the database operations in the application 
 
 This sample solution uses a variant of the factory method pattern when creating the DAO's. It is implemented in the DaoFactory class in the ClientManager.DataAccessLayer project. There is a single method with a generic parameter indicating which DAO you get back.
 
+
+
 The task can be solved with a single table in the database that should look something like this:
 
 ```SQL
@@ -20,3 +22,5 @@ CREATE TABLE Customers (
   Email nvarchar(128)  
 )
 ```
+
+The database is created very simply with the DbUp DeployChanges class that executes the SQL script above. Test data is also inserted. The SQL scripts are executed before each test and the database is dropped after. That way we can be sure that the test is consistent.
